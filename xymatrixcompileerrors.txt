@@ -1,0 +1,18 @@
+Arduino: 1.6.5 (Mac OS X), TD: 1.28, Board: "Teensy 3.2 / 3.1, Serial, 48 MHz optimized, US English"
+
+Using library SPI in folder: /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI 
+Using library SoftwareSerial in folder: /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SoftwareSerial 
+Using library Adafruit BluefruitLE nRF51 in folder: /Users/cdonges/Documents/Arduino/libraries/Adafruit_BluefruitLE_nRF51 
+Using library FastLED in folder: /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED 
+
+/Applications/Arduino.app/Contents/Java/hardware/tools/arm/bin/arm-none-eabi-g++ -c -O -g -Wall -ffunction-sections -fdata-sections -MMD -nostdlib -fno-exceptions -felide-constructors -std=gnu++0x -fno-rtti -mthumb -mcpu=cortex-m4 -fsingle-precision-constant -D__MK20DX256__ -DTEENSYDUINO=128 -DARDUINO=10605 -DF_CPU=48000000 -DUSB_SERIAL -DLAYOUT_US_ENGLISH -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3 -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SoftwareSerial -I/Users/cdonges/Documents/Arduino/libraries/Adafruit_BluefruitLE_nRF51 -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED /var/folders/6z/zzcfflx93yb_g35c1fdzfjnm0000gn/T/build1868522299370102441.tmp/packetParser.cpp -o /var/folders/6z/zzcfflx93yb_g35c1fdzfjnm0000gn/T/build1868522299370102441.tmp/packetParser.cpp.o 
+/Applications/Arduino.app/Contents/Java/hardware/tools/arm/bin/arm-none-eabi-g++ -c -O -g -Wall -ffunction-sections -fdata-sections -MMD -nostdlib -fno-exceptions -felide-constructors -std=gnu++0x -fno-rtti -mthumb -mcpu=cortex-m4 -fsingle-precision-constant -D__MK20DX256__ -DTEENSYDUINO=128 -DARDUINO=10605 -DF_CPU=48000000 -DUSB_SERIAL -DLAYOUT_US_ENGLISH -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3 -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SoftwareSerial -I/Users/cdonges/Documents/Arduino/libraries/Adafruit_BluefruitLE_nRF51 -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED /var/folders/6z/zzcfflx93yb_g35c1fdzfjnm0000gn/T/build1868522299370102441.tmp/xymatrixdemoBLE.cpp -o /var/folders/6z/zzcfflx93yb_g35c1fdzfjnm0000gn/T/build1868522299370102441.tmp/xymatrixdemoBLE.cpp.o 
+In file included from xymatrixdemoBLE.ino:48:0:
+/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/FastLED.h:12:2: warning: #warning FastLED version 3001000 (Not really a warning, just telling you here.) [-Wcpp]
+#warning FastLED version 3001000  (Not really a warning, just telling you here.)
+^
+xymatrixdemoBLE.ino: In function 'void loop()':
+xymatrixdemoBLE.ino:217:13: error: expected unqualified-id before '(' token
+xymatrixdemoBLE.ino:217:22: error: expected ';' before ')' token
+xymatrixdemoBLE.ino:226:13: warning: unused variable 'pressed' [-Wunused-variable]
+expected ';' before ')' token
