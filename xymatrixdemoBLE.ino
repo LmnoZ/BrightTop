@@ -33,9 +33,9 @@
 #define CHIPSET     WS2812B
 
 // Global maximum brightness value, maximum 255
-#define MAXBRIGHTNESS 72
+#define MAXBRIGHTNESS 255
 #define STARTBRIGHTNESS 102
-
+#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 // Cycle time (milliseconds between pattern changes)
 #define cycleTime 15000
 
@@ -116,6 +116,8 @@ void setup(void)
   Serial.println(F("Adafruit Bluefruit Connected Macetech LED Shades"));
   Serial.println(F("------------------------------------------------"));
 
+
+
   /* Initialise the module */
   Serial.print(F("Initialising the Bluefruit LE module: "));
 
@@ -175,7 +177,7 @@ void loop(void)
 {
   /* Wait for new data to arrive */
   uint8_t len = readPacket(&ble, BLE_READPACKET_TIMEOUT);
-  if (len == 0) return;
+  //if (len == 0) return;
   /* Got a packet! */
   printHex(packetbuffer, len);
 
@@ -197,14 +199,15 @@ void loop(void)
     for (uint8_t i = 0; i < NUM_LEDS; i++)
     {
       leds[i]=CRGB(red, green, blue);
+      
     }
-        FastLED.delay(20);
+        FastLED.show(20);
   }
   // Buttons
   else if (packetbuffer[1] == 'B')// If a controller button is pressed, read it and assign the mode
   {
     uint8_t buttnum = packetbuffer[2] - '0';
-    boolean released = packetbuffer[3] - '0';
+    boolean pressed = packetbuffer[3] - '0';
     button = buttnum;
     mode = 2;
   }
@@ -215,33 +218,54 @@ void loop(void)
   {
     if (button == 1)// First button is a single color fading rainbow
     {
-      threeSine();
-      FastLED.show();
-      FastLED.delay(1000/FRAMES_PER_SECOND);
+      swirly();
+      FastLED.delay(20);
       }
     
   else if (button == 2)// Second is a ful spectrum rainbow
     {
-      glitter();
-      FastLED.show();  
-      FastLED.delay(1000/FRAMES_PER_SECOND); 
+      threeSine();
+      FastLED.delay(20); 
      }
 
   else if (button == 3)// 
     {
       plasma();
-      FastLED.show();  
-      FastLED.delay(1000/FRAMES_PER_SECOND);
+      FastLED.delay(10);//
     }
       
-  else if (button == 4);
+  else if (button == 4)//
   {
-    slantBars();
-    FastLED.show();  
-    FastLED.delay(1000/FRAMES_PER_SECOND);
+   pride();
+    FastLED.delay(20);
   }
+  
+   else if (button == 5)// 
+    {
+      sideRain();
+      FastLED.delay(20);//
+    }
+    
+     else if (button == 6)// 
+    {
+      confetti();
+      FastLED.delay(20);//
+    }
+    
+     else if (button == 7)// 
+    {
+      slantBars();
+      FastLED.delay(20);//
+    }
+    
+     else if (button == 8)// 
+    {
+      glitter();
+      FastLED.delay(20);//
+    }
   }
 }
+
 
 
 

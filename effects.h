@@ -23,9 +23,9 @@ void threeSine() {
 
       // Calculate "sine" waves with varying periods
       // sin8 is used for speed; cos8, quadwave8, or triwave8 would also work here
-      byte sinDistanceR = qmul8(abs(y * (255 / kMatrixHeight) - sin8(sineOffset * 9 + x * 16)), 2);
-      byte sinDistanceG = qmul8(abs(y * (255 / kMatrixHeight) - sin8(sineOffset * 10 + x * 16)), 2);
-      byte sinDistanceB = qmul8(abs(y * (255 / kMatrixHeight) - sin8(sineOffset * 11 + x * 16)), 2);
+      byte sinDistanceR = qmul8(abs(y * (255 / kMatrixHeight) - sin8(sineOffset * 1 + x * 5)), 2);
+      byte sinDistanceG = qmul8(abs(y * (255 / kMatrixHeight) - sin8(sineOffset * 2 + x * 5)), 2);
+      byte sinDistanceB = qmul8(abs(y * (255 / kMatrixHeight) - sin8(sineOffset * 3 + x * 16)), 2);
 
       leds[XY(x, y)] = CRGB(255 - sinDistanceR, 255 - sinDistanceG, 255 - sinDistanceB);
     }
@@ -112,7 +112,46 @@ void glitter() {
 
 }
 
+void pride() 
+{
+  static uint16_t sPseudotime = 0;
+  static uint16_t sLastMillis = 0;
+  static uint16_t sHue16 = 0;
+ 
+  uint8_t sat8 = beatsin88( 87, 220, 250);
+  uint8_t brightdepth = beatsin88( 341, 96, 224);
+  uint16_t brightnessthetainc16 = beatsin88( 203, (25 * 256), (40 * 256));
+  uint8_t msmultiplier = beatsin88(147, 23, 60);
 
+  uint16_t hue16 = sHue16;//gHue * 256;
+  uint16_t hueinc16 = beatsin88(113, 1, 3000);
+  
+  uint16_t ms = millis();
+  uint16_t deltams = ms - sLastMillis;
+  sLastMillis  = ms;
+  sPseudotime += deltams * msmultiplier;
+  sHue16 += deltams * beatsin88( 400, 5,9);
+  uint16_t brightnesstheta16 = sPseudotime;
+  
+  for( uint16_t i = 0 ; i < NUM_LEDS; i++) {
+    hue16 += hueinc16;
+    uint8_t hue8 = hue16 / 256;
+
+    brightnesstheta16  += brightnessthetainc16;
+    uint16_t b16 = sin16( brightnesstheta16  ) + 32768;
+
+    uint16_t bri16 = (uint32_t)((uint32_t)b16 * (uint32_t)b16) / 65536;
+    uint8_t bri8 = (uint32_t)(((uint32_t)bri16) * brightdepth) / 65536;
+    bri8 += (255 - brightdepth);
+    
+    CRGB newcolor = CHSV( hue8, sat8, bri8);
+    
+    uint16_t pixelnumber = i;
+    pixelnumber = (NUM_LEDS-1) - pixelnumber;
+    
+    nblend( leds[pixelnumber], newcolor, 64);
+  }
+}
 // Fills saturated colors into the array from alternating directions
 void colorFill() {
 
@@ -165,6 +204,39 @@ void colorFill() {
 
 }
 
+void swirly()
+{
+  // startup tasks
+  if (effectInit == false) {
+    effectInit = true;
+    effectDelay = 15;
+  }
+
+  // Apply some blurring to whatever's already on the matrix
+  // Note that we never actually clear the matrix, we just constantly
+  // blur it repeatedly.  Since the blurring is 'lossy', there's
+  // an automatic trend toward black -- by design.
+  uint8_t blurAmount = beatsin8(2,10,255);
+  blur2d( leds, kMatrixWidth, kMatrixHeight, blurAmount);
+
+  // Use two out-of-sync sine waves
+  uint8_t  i = beatsin8( 27, kBorderWidth, kMatrixHeight-kBorderWidth);
+  uint8_t  j = beatsin8( 41, kBorderWidth, kMatrixWidth-kBorderWidth);
+  // Also calculate some reflections
+  uint8_t ni = (kMatrixWidth-1)-i;
+  uint8_t nj = (kMatrixWidth-1)-j;
+  
+  // The color of each point shifts over time, each at a different speed.
+  uint16_t ms = millis();  
+  leds[XY( i, j)] += CHSV( ms / 11, 200, 255);
+  leds[XY( j, i)] += CHSV( ms / 13, 200, 255);
+  leds[XY(ni,nj)] += CHSV( ms / 17, 200, 255);
+  leds[XY(nj,ni)] += CHSV( ms / 29, 200, 255);
+  leds[XY( i,nj)] += CHSV( ms / 37, 200, 255);
+  leds[XY(ni, j)] += CHSV( ms / 41, 200, 255);
+  
+  FastLED.show();
+}
 
 
 // Random pixels scroll sideways, uses current hue
@@ -223,6 +295,32 @@ void slantBars() {
 
   slantPos -= 4;
 
+}
+
+
+
+void autoplay()
+{
+  typedef void (*SimplePatternList[])();
+SimplePatternList gPatterns = {threeSine,
+                             plasma,
+                             confetti,
+                             rider,
+                             pride,
+                             glitter,
+                             slantBars,
+                             swirly,
+                             colorFill,
+                             sideRain
+                            };
+  // Call the current pattern function once, updating the 'leds' array
+  gPatterns[gCurrentPatternNumber]();
+
+  // send the 'leds' array out to the actual LED strip
+  FastLED.delay(20); 
+
+
+ FastLED.delay(20);
 }
 
 

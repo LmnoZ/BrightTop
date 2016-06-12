@@ -16,6 +16,11 @@ CRGBPalette16 currentPalette(RainbowColors_p); // global palette storage
 typedef void (*functionList)(); // definition for list of effect function pointers
 extern const byte numEffects;
 
+
+uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
+
+#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
+
 // Increment the global hue value for functions that use it
 byte gHue = 0;
 byte gHueCount = 0;
@@ -23,6 +28,9 @@ void hueCycle(byte incr) {
     gHueCount = 0;
     gHue+=incr;
 }
+
+
+
 
 // Set every LED in the array to a specified color
 void fillAll(CRGB fillColor) {
@@ -55,6 +63,8 @@ void scrollArray(byte scrollDir) {
     }
   
 }
+
+
 
 
 // Pick a random palette from a list
